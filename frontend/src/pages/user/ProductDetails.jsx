@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const products = [
   {
-    id: 6,
+    id: 1,
     title:
       "Non Transfer Waterproof Longlast Liquid Matte me Beauty Lipstick Combo Pack Of 4",
     price: 91,
