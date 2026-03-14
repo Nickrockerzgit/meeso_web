@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/landingPage.jsx';
-import ProductDetails from "./pages/ProductDetails.jsx";
-import RegisterNumber from "./pages/RegisterNumber.jsx";
-import CheckoutPage from "./pages/userAddress.jsx";
-import PaymentPage from  "./pages/paymentPage.jsx";
+import LandingPage from './pages/user/landingPage.jsx';
+import ProductDetails from "./pages/user/ProductDetails.jsx";
+import RegisterNumber from "./pages/user/RegisterNumber.jsx";
+import CheckoutPage from "./pages/user/userAddress.jsx";
+import PaymentPage from  "./pages/user/paymentPage.jsx";
 
 
 function App() {

@@ -1,5 +1,5 @@
 // src/pages/LandingPage.tsx  (or src/App.tsx if it's the main page)
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { useState } from "react";
 import ProductSection from "./ProductSection";
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaTwitter } from "react-icons/fa";
@@ -24,11 +24,11 @@ export default function LandingPage() {
         {/* Bottom Feature Bar */}
          <div className="bg-white border border-pink-200 rounded-lg mt-2 mx-2 px-3 md:px-6 py-2 md:py-3">
 
-  <div className="flex items-center justify-between text-[11px] md:text-sm text-gray-700 whitespace-nowrap">
+  <div className="flex items-center justify-center text-[11px] md:text-sm text-gray-700 whitespace-nowrap">
 
     {/* Return */}
-    <div className="flex items-center gap-1">
-      <span className="text-blue-500">↩️</span>
+    <div className="flex items-center gap-2">
+      <span className="text-blue-500 ">↩️</span>
       <span>7 Days Easy Return</span>
     </div>
 
@@ -148,55 +148,64 @@ export default function LandingPage() {
   </div>
 </section>
 <section
-  className="w-full h-[420px] bg-cover bg-center flex items-center"
+  className="w-full bg-cover bg-center"
   style={{ backgroundImage: "url('/banner2.png')" }}
 >
-  {/* LEFT SIDE */}
-  <div className="w-1/3 h-full flex items-end pl-16 pb-16">
-    
-    <button className="bg-white text-purple-800 px-10 py-4 rounded-xl text-2xl font-bold shadow-lg w-fit">
-      Download Now
-    </button>
+
+  <div className="max-w-7xl mx-auto px-4 py-6 md:py-0 md:h-[420px] flex flex-col md:flex-row items-center">
+
+    {/* LEFT SIDE */}
+    <div className="w-full md:w-1/3 flex justify-center md:justify-start items-center md:items-end md:pl-16 md:pb-16 mb-4 md:mb-0">
+
+      <button className="bg-white text-purple-800 px-6 md:px-10 py-2 md:py-4 rounded-xl text-sm md:text-2xl font-bold shadow-lg">
+        Download Now
+      </button>
+
+    </div>
+
+
+    {/* RIGHT SIDE */}
+    <div className="w-full md:w-2/3 grid grid-cols-2 sm:grid-cols-3 md:flex md:justify-evenly gap-4 md:gap-6 items-center">
+
+      {[
+        { name: "Trending Now", img: "/banner21.png" },
+        { name: "Budget Buys", img: "/banner22.png" },
+        { name: "Top Rated Picks", img: "/banner23.png" },
+        { name: "Daily Essentials", img: "/banner24.png" },
+      ].map((item, index) => (
+        
+        <div
+          key={index}
+          className="hover:bg-[#A40E7F] hover:shadow-2xl hover:scale-105 rounded-lg transition duration-300 flex flex-col items-center"
+        >
+
+          <img
+            src={item.img}
+            alt={item.name}
+            className="h-24 sm:h-32 md:h-64 object-contain"
+          />
+
+          <div className="bg-[#ffe8c2] text-purple-900 mt-1 px-3 md:px-9 py-1 md:py-2 rounded-lg font-bold shadow text-[10px] md:text-base text-center">
+            {item.name}
+          </div>
+
+        </div>
+
+      ))}
+
+    </div>
 
   </div>
 
-  {/* RIGHT SIDE */}
-  <div className="w-2/3 flex justify-evenly items-center">
-    {[
-      { name: "Trending Now", img: "/banner21.png" },
-      { name: "Budget Buys", img: "/banner22.png" },
-      { name: "Top Rated Picks", img: "/banner23.png" },
-      { name: "Daily Essentials", img: "/banner24.png" },
-    ].map((item, index) => (
-      <div
-  key={index}
-  className=" hover:bg-[#A40E7F] hover:shadow-2xl  hover:scale-105 rounded-lg transition duration-300 flex flex-col items-center"
->
-
-  <div>
-    <img
-      src={item.img}
-      alt={item.name}
-      className=" h-64 object-contain"
-    />
-  </div>
-
-  <div className="bg-[#ffe8c2] text-purple-900  mt-1 px-9 py-2 rounded-lg font-bold shadow">
-    {item.name}
-  </div>
-
-</div>
-    ))}
-  </div>
 </section>
 <ProductSection />
 <footer className="bg-[#f5f5f6] mt-20 border-t">
 
   {/* TOP SECTION */}
-  <div className="max-w-7xl mx-auto px-6 py-12 flex justify-between items-start">
+  <div className="max-w-7xl mx-auto px-6 py-12 flex flex-wrap gap-10 justify-between items-start">
 
     {/* COLUMN 1 */}
-    <div className="w-[320px]">
+    <div className="w-full sm:w-[320px]">
       <h2 className="text-[28px] font-semibold text-[#353543] mb-4">
         Shop Non-Stop on Meesho
       </h2>
@@ -206,7 +215,7 @@ export default function LandingPage() {
         Cash on Delivery
       </p>
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-wrap">
         <img src="/googleplaystore.png" className="h-10" />
         <img src="/appstore.png" className="h-10" />
       </div>
@@ -233,7 +242,7 @@ export default function LandingPage() {
         Reach out to us
       </h3>
 
-      <div className="flex gap-4 text-[22px]">
+      <div className="flex gap-4 text-[22px] flex-wrap">
         <FaFacebook className="text-blue-600 cursor-pointer" />
         <FaInstagram className="text-pink-500 cursor-pointer" />
         <FaYoutube className="text-red-600 cursor-pointer" />
@@ -243,7 +252,7 @@ export default function LandingPage() {
     </div>
 
     {/* COLUMN 5 */}
-    <div className="w-[300px]">
+    <div className="w-full sm:w-[300px]">
       <h3 className="text-[#353543] font-semibold mb-3 text-[15px]">
         Contact Us
       </h3>
@@ -262,10 +271,107 @@ export default function LandingPage() {
 
   </div>
 
+
   {/* MORE ABOUT MEESHO */}
-<div className="max-w-7xl mx-auto px-6 pb-10"> {/* BUTTON */} <button onClick={() => setOpen(!open)} className="w-full bg-white border rounded-lg px-10 py-6 flex justify-between items-center text-gray-800 font-semibold" > More About Meesho <span>{open ? "▲" : "▼"}</span> </button> {/* CONTENT */} {open && ( <div className="bg-white border border-t-0 p-8 text-gray-600 leading-7"> {/* Heading */} <h2 className="text-2xl font-semibold text-gray-800 mb-3"> Discover a World of Affordable Fashion & Everyday Essentials </h2> <p className="mb-6 text-sm"> Upgrade your wardrobe and stock your home with the latest trends and essentials at prices designed for everyday value. </p> <h2 className="text-xl font-semibold text-gray-800 mb-3"> Shop Millions of Products Across All Categories </h2> <p className="mb-6 text-sm"> From trendy fashion finds to essential homeware, Meesho is your one-stop shop for everything you need. </p> <h2 className="text-2xl font-semibold text-gray-800 mb-4"> Latest Women's Fashion Is Right Here </h2> <h3 className="text-lg font-semibold text-gray-800 mb-2"> Western Wear for Women </h3> <p className="mb-6 text-sm"> Find trendy dresses, casual jeans and comfortable tops suitable for any occasion. </p> <h3 className="text-lg font-semibold text-gray-800 mb-2"> Accessories, Jewellery, and Footwear </h3> <p className="mb-8 text-sm"> Choose from a wide selection of jewelry sets, handbags, belts and footwear. </p> {/* Download App */} <h2 className="text-pink-600 text-lg font-semibold mb-3"> Download Meesho App Now </h2> <h3 className="text-lg font-semibold text-gray-800 mb-3"> More Than Just Shopping </h3> <p className="mb-6 text-sm"> Meesho enables individuals to start their selling journey easily. </p> {/* Online Shopping */} <h3 className="text-pink-600 text-lg font-semibold mb-3"> Online Shopping </h3> <h4 className="text-gray-800 font-semibold mb-2"> Baby </h4> <p className="text-pink-600 text-sm mb-4"> Baby Blanket | Baby Hanging Cradle | Baby Pillows | Baby Sleeping Bag | Baby Towels </p> <h4 className="text-gray-800 font-semibold mb-2"> Electronics & Accessories </h4> <p className="text-pink-600 text-sm mb-4"> Android Smart Watches | Bluetooth Earphones | Bluetooth Speakers | Car Mobile Holders | CCTV Cameras | Data Cables | Digital Photo Frames </p> <h4 className="text-gray-800 font-semibold mb-2"> Home & Kitchen </h4> <p className="text-pink-600 text-sm"> Aprons | Choppers | Chopping Boards | Cookers | Cutlery | Food Processors | Hand Blender | Kitchen Towels | Mixer Grinder | Toaster | Water Bottles </p> </div> )} </div>
+  <div className="max-w-7xl mx-auto px-6 pb-10">
+
+    {/* BUTTON */}
+    <button
+      onClick={() => setOpen(!open)}
+      className="w-full bg-white border rounded-lg px-10 py-6 flex justify-between items-center text-gray-800 font-semibold"
+    >
+      More About Meesho
+      <span>{open ? "▲" : "▼"}</span>
+    </button>
+
+    {/* CONTENT */}
+    {open && (
+      <div className="bg-white border border-t-0 p-8 text-gray-600 leading-7">
+
+        <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+          Discover a World of Affordable Fashion & Everyday Essentials
+        </h2>
+
+        <p className="mb-6 text-sm">
+          Upgrade your wardrobe and stock your home with the latest trends and essentials at prices designed for everyday value.
+        </p>
+
+        <h2 className="text-xl font-semibold text-gray-800 mb-3">
+          Shop Millions of Products Across All Categories
+        </h2>
+
+        <p className="mb-6 text-sm">
+          From trendy fashion finds to essential homeware, Meesho is your one-stop shop for everything you need.
+        </p>
+
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          Latest Women's Fashion Is Right Here
+        </h2>
+
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+          Western Wear for Women
+        </h3>
+
+        <p className="mb-6 text-sm">
+          Find trendy dresses, casual jeans and comfortable tops suitable for any occasion.
+        </p>
+
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+          Accessories, Jewellery, and Footwear
+        </h3>
+
+        <p className="mb-8 text-sm">
+          Choose from a wide selection of jewelry sets, handbags, belts and footwear.
+        </p>
+
+        <h2 className="text-pink-600 text-lg font-semibold mb-3">
+          Download Meesho App Now
+        </h2>
+
+        <h3 className="text-lg font-semibold text-gray-800 mb-3">
+          More Than Just Shopping
+        </h3>
+
+        <p className="mb-6 text-sm">
+          Meesho enables individuals to start their selling journey easily.
+        </p>
+
+        <h3 className="text-pink-600 text-lg font-semibold mb-3">
+          Online Shopping
+        </h3>
+
+        <h4 className="text-gray-800 font-semibold mb-2">
+          Baby
+        </h4>
+
+        <p className="text-pink-600 text-sm mb-4">
+          Baby Blanket | Baby Hanging Cradle | Baby Pillows | Baby Sleeping Bag | Baby Towels
+        </p>
+
+        <h4 className="text-gray-800 font-semibold mb-2">
+          Electronics & Accessories
+        </h4>
+
+        <p className="text-pink-600 text-sm mb-4">
+          Android Smart Watches | Bluetooth Earphones | Bluetooth Speakers | Car Mobile Holders | CCTV Cameras | Data Cables | Digital Photo Frames
+        </p>
+
+        <h4 className="text-gray-800 font-semibold mb-2">
+          Home & Kitchen
+        </h4>
+
+        <p className="text-pink-600 text-sm">
+          Aprons | Choppers | Chopping Boards | Cookers | Cutlery | Food Processors | Hand Blender | Kitchen Towels | Mixer Grinder | Toaster | Water Bottles
+        </p>
+
+      </div>
+    )}
+
+  </div>
 
 </footer>
+
+
 </div>
   );
 }
