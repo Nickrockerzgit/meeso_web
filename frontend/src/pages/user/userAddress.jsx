@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { MapPin } from "lucide-react";
 import { Truck } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate,useParams } from "react-router-dom";
 
 export default function ReviewPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
   const [openAddress, setOpenAddress] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-
   const [address, setAddress] = useState(null);
-
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -19,7 +20,39 @@ export default function ReviewPage() {
     city: "",
     state: ""
   });
+  const phone = location.state?.phone;
 
+  useEffect(() => {
+
+  const fetchProduct = async () => {
+
+    try {
+
+      const res = await fetch(`http://localhost:5000/api/products/${id}`);
+
+      const data = await res.json();
+
+      setProduct(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
+
+  fetchProduct();
+
+}, [id]);
+const goToPayment = () => {
+ console.log("pro",product);
+  navigate("/paymentPage", {
+    state: {
+      phone: phone,
+      product: product
+    }
+  });
+
+};
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -89,7 +122,7 @@ export default function ReviewPage() {
             <h2 className="font-semibold text-lg mb-4">
               Product Details
             </h2>
-
+{product && (
             <div className="border rounded-lg">
 
              <div className="p-3 border-b text-sm font-medium flex items-center gap-2 whitespace-nowrap">
@@ -100,28 +133,28 @@ export default function ReviewPage() {
               <div className="flex gap-4 p-4">
 
                 <img
-                  src="https://i.imgur.com/kU1ZK9F.png"
+                  src={product.image_url_1}
                   className="w-16 h-20"
                 />
 
                 <div className="flex-1">
 
                   <h3 className="text-sm font-medium">
-                    Liquid Matte Long Lasting Matte Lipsticks
+                   {product.product_detail}
                   </h3>
 
                   <div className="flex items-center gap-2 mt-1">
 
                     <span className=" font-semibold">
-                      ₹91
+                      ₹{product.price}
                     </span>
 
                     <span className="line-through text-gray-400 text-sm">
-                      ₹108
+                      ₹{product.old_price}
                     </span>
 
                     <span className="text-green-600 text-xs">
-                      16% Off
+                      {Math.round(((product.old_price - product.price) / product.old_price) * 100)}% Off
                     </span>
 
                     <span className="text-xs bg-orange-100 text-orange-600 px-2 rounded">
@@ -145,12 +178,12 @@ export default function ReviewPage() {
               </div>
 
               <div className="border-t px-4 py-3 flex justify-between text-sm text-gray-600">
-                <span>Sold by: Zenya World</span>
+                <span>Sold by: {product.shop_name}</span>
                 <span>Free Delivery</span>
               </div>
 
             </div>
-
+)}
           </div>
 
 
@@ -239,7 +272,7 @@ export default function ReviewPage() {
 
           {address && (
             <button 
-            onClick={() => navigate(`/paymentPage`)}
+            onClick={goToPayment}
             className="w-full bg-[#9f2089] text-white py-3 rounded-lg font-semibold mt-4">
               Continue
             </button>

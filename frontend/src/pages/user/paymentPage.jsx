@@ -1,7 +1,20 @@
 
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function PaymentPage() {
+  const location = useLocation();
+  const phone = location.state?.phone;
+  const product = location.state?.product;
+  const price = product?.price || 0;
+const oldPrice = product?.old_price || 0;
+
+const discount = Math.round(oldPrice - price);
+const orderTotal = price;
+  const [cardNo, setCardNo] = useState("");
+const [expMonth, setExpMonth] = useState("");
+const [expYear, setExpYear] = useState("");
+const [cvv, setCvv] = useState("");
   const [payment, setPayment] = useState("online");
   const [showCardForm, setShowCardForm] = useState(false);
   const [cardVerified, setCardVerified] = useState(false);
@@ -9,6 +22,33 @@ export default function PaymentPage() {
   const [showNetBanking, setShowNetBanking] = useState(false);
   const [showCodModal, setShowCodModal] = useState(false);
   const [resell, setResell] = useState("no");
+
+  const saveCard = async () => {
+  try {
+    const res = await fetch("http://localhost:5000/api/user-cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_no: phone, // user phone
+        card_no: cardNo,
+        exp_month: expMonth,
+        exp_year: expYear,
+        cvv: cvv,
+      }),
+    });
+
+    const data = await res.json();
+    console.log("Card saved:", data);
+
+    setCardVerified(true);
+    setShowCardForm(false);
+
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div className="min-h-screen bg-white">
@@ -82,7 +122,7 @@ export default function PaymentPage() {
             <div className="flex items-center gap-6">
 
               <span className="text-xl font-semibold">
-                ₹91
+                ₹{orderTotal}
               </span>
 
               <div className="w-[1px] h-6 bg-gray-300"></div>
@@ -118,10 +158,10 @@ export default function PaymentPage() {
               <div className="flex items-center gap-6">
 
                 <div>
-                  <p className="text-gray-400 line-through text-sm">₹91</p>
-                  <p className="text-green-600 font-semibold text-lg">₹69</p>
+                  <p className="text-gray-400 line-through text-sm">₹{orderTotal}</p>
+                  <p className="text-green-600 font-semibold text-lg">₹{orderTotal-33}</p>
                   <span className="text-xs bg-green-100 px-2 py-1 rounded text-green-700">
-                    Save ₹22
+                    Save ₹33
                   </span>
                 </div>
 
@@ -193,28 +233,36 @@ export default function PaymentPage() {
                     </h3>
 
                     <input
-                      placeholder="Enter Card Number"
-                      className="w-full border-b py-3 mt-4 outline-none"
-                    />
+  placeholder="Enter Card Number"
+  value={cardNo}
+  onChange={(e) => setCardNo(e.target.value)}
+  className="w-full border-b py-3 mt-4 outline-none"
+/>
 
                     <div className="flex gap-6 mt-6">
 
                       <input
-                        placeholder="MM"
-                        className="w-1/2 border-b py-3 outline-none"
-                      />
+  placeholder="MM"
+  value={expMonth}
+  onChange={(e) => setExpMonth(e.target.value)}
+  className="w-1/2 border-b py-3 outline-none"
+/>
 
-                      <input
-                        placeholder="YY"
-                        className="w-1/2 border-b py-3 outline-none"
-                      />
+                     <input
+  placeholder="YY"
+  value={expYear}
+  onChange={(e) => setExpYear(e.target.value)}
+  className="w-1/2 border-b py-3 outline-none"
+/>
 
                     </div>
 
-                    <input
-                      placeholder="CVV"
-                      className="w-full border-b py-3 mt-6 outline-none"
-                    />
+                   <input
+  placeholder="CVV"
+  value={cvv}
+  onChange={(e) => setCvv(e.target.value)}
+  className="w-full border-b py-3 mt-6 outline-none"
+/>
 
                     <p className="text-xs text-gray-500 mt-1">
                       3-digit code behind your card
@@ -230,14 +278,11 @@ export default function PaymentPage() {
                       </button>
 
                       <button
-                        onClick={() => {
-                          setCardVerified(true);
-                          setShowCardForm(false);
-                        }}
-                        className="bg-[#9f2089] text-white px-4 py-2 rounded"
-                      >
-                        Verify
-                      </button>
+  onClick={saveCard}
+  className="bg-[#9f2089] text-white px-4 py-2 rounded"
+>
+  Verify
+</button>
 
                     </div>
 
@@ -352,21 +397,21 @@ export default function PaymentPage() {
 
           <div className="flex justify-between text-sm mb-2">
             <span className="underline decoration-dotted">Product Price</span>
-            <span>+ ₹108</span>
+            <span>+ ₹{oldPrice}</span>
           </div>
 
           <div className="flex justify-between text-sm text-green-600 mb-4">
             <span className="underline decoration-dotted">Total Discounts</span>
-            <span>- ₹17</span>
+            <span>- ₹{discount}</span>
           </div>
 
           <div className="border-t pt-4 flex justify-between font-semibold text-lg">
             <span>Order Total</span>
-            <span>₹91</span>
+            <span>₹{orderTotal}</span>
           </div>
 
           <div className="bg-green-100 text-green-700 text-sm p-3 rounded mt-4">
-            Yay! Your total discount is ₹17
+            Yay! Your total discount is ₹{discount}
           </div>
 
           <button className="w-full bg-[#9f2089] text-white py-3 rounded-lg font-semibold mt-4">

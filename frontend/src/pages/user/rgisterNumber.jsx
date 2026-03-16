@@ -1,8 +1,22 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React,{ useState } from "react";
+import { useNavigate , useParams } from "react-router-dom";
 
 export default function RegisterNumber() {
   const navigate = useNavigate();
+  const [phone, setPhone] = useState("");
+  const { id } = useParams();
+  const handleContinue = () => {
+
+    if (!phone) {
+      alert("Enter phone number");
+      return;
+    }
+
+    navigate(`/address/${id}`, {
+      state: { phone }
+    });
+
+  };
   return (
 <div className="min-h-screen bg-[#fdeef6] flex items-center justify-center px-4">
 
@@ -37,6 +51,8 @@ export default function RegisterNumber() {
               <input
                 type="text"
                 placeholder="Phone Number"
+                value={phone}
+                onChange={(e)=>setPhone(e.target.value)}
                 className="flex-1 outline-none text-gray-700"
               />
 
@@ -46,7 +62,7 @@ export default function RegisterNumber() {
 
           {/* BUTTON */}
           <button 
-          onClick={() => navigate(`/address/${1}`)}
+          onClick={handleContinue}
           className="w-full mt-2 bg-[#9f2089] hover:bg-[#8b1c78] text-white py-3 rounded-md font-semibold">
             Continue
           </button>
