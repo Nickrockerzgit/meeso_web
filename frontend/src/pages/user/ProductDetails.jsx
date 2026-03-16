@@ -1,56 +1,73 @@
-import { useParams } from "react-router-dom";
-import { useState,useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-const products = [
-  {
-    id: 1,
-    title:
-      "Non Transfer Waterproof Longlast Liquid Matte me Beauty Lipstick Combo Pack Of 4",
-    price: 91,
-    oldPrice: 104,
-    discount: "13% off",
-    rating: 3.7,
-    reviews: 9589,
-
-    images: [
-      "/lipstick.png",
-      "/lipstick.png",
-      "/lipstick.png",
-      "/lipstick.png",
-    ],
-    reviewList: [
-      {
-        user: "Meesho User",
-        rating: 5,
-        date: "13 Dec 2025",
-        comment:
-          "Yah product hamen bahut achcha laga yah mujhe meri mummy ko bahut achcha laga thank u meesho",
-        images: ["/review1.png", "/review2.png", "/review3.png"],
-        helpful: 94,
-      },
-      {
-        user: "Riya Sharma",
-        rating: 4,
-        date: "10 Jan 2026",
-        comment: "Quality achhi hai aur color bhi same hai.",
-        images: ["/review1.png"],
-        helpful: 21,
-      },
-    ],
-  },
-];
+const API = import.meta.env.VITE_API_URL||"http://localhost:5000";
 
 export default function ProductDetails() {
-    const navigate = useNavigate();
-const [selectedImage, setSelectedImage] = useState("");
+
   const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
+  const navigate = useNavigate();
+
+  const [product, setProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-  if (product) {
-    setSelectedImage(product.images[0]);
+    fetchProduct();
+  }, []);
+
+  const fetchProduct = async () => {
+
+    try {
+      console.log("request gone");
+      const res = await fetch(`${API}/api/products/${id}`);
+      console.log("request came",res);
+      const data = await res.json();
+      console.log("request came",data);
+      const formattedProduct = {
+        ...data,
+
+        title: data.product_detail,
+        oldPrice: data.old_price,
+        reviews: data.total_reviews,
+
+        images: [
+          data.image_url_1,
+          data.image_url_2,
+          data.image_url_3,
+          data.image_url_4
+        ].filter(Boolean),
+
+        discount:
+          data.old_price && data.price
+            ? Math.round(((data.old_price - data.price) / data.old_price) * 100) + "% off"
+            : null,
+
+        reviewList: (data.reviews || []).map(r => ({
+          user: r.reviewerName,
+          rating: r.rating,
+          comment: r.comment,
+          date: new Date(r.created_at).toLocaleDateString(),
+          helpful: r.helpful,
+          images: r.reviewImageUrl ? [r.reviewImageUrl] : []
+        }))
+      };
+
+      setProduct(formattedProduct);
+      setSelectedImage(formattedProduct.images[0]);
+
+    } catch (err) {
+      console.error("Error fetching product:", err);
+    } finally {
+      setLoading(false);
+    }
+
+  };
+
+  if (loading) {
+    return <p className="text-center mt-10">Loading product...</p>;
   }
-}, [product]);
+
   if (!product) {
     return <div className="text-center mt-20 text-xl">Product not found</div>;
   }
@@ -162,27 +179,25 @@ const [selectedImage, setSelectedImage] = useState("");
 
           {/* PRODUCT HIGHLIGHTS */}
           <div className="border border-[#e6e6e6] rounded-md p-5 bg-white">
-            <h2 className="font-semibold mb-4 text-[#353543]">
-              Product Highlights
-            </h2>
+  <h2 className="font-semibold mb-4 text-[#353543]">
+    Product Highlights
+  </h2>
 
-            <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm">
-              <div>
-                <p className="text-gray-400">Flavour</p>
-                <p>No Flavour</p>
-              </div>
+  <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm">
 
-              <div>
-                <p className="text-gray-400">Color</p>
-                <p>Multicolor</p>
-              </div>
+    {product.highlights &&
+      Object.entries(product.highlights).map(([key, value]) => (
 
-              <div>
-                <p className="text-gray-400">Generic Name</p>
-                <p>Liquid Lipstick</p>
-              </div>
-            </div>
-          </div>
+        <div key={key}>
+          <p className="text-gray-400">{key}</p>
+          <p>{value}</p>
+        </div>
+
+      ))
+    }
+
+  </div>
+</div>
 
           {/* SOLD BY SECTION */}
 <div className="border border-[#e6e6e6] rounded-xl bg-white p-5">
@@ -218,7 +233,9 @@ const [selectedImage, setSelectedImage] = useState("");
 
         {/* STORE NAME */}
         <p className="text-[15px] font-medium text-[#353543]">
-          FusionDeals
+          
+{product.shop_name}
+
         </p>
 
         {/* STATS */}
@@ -227,7 +244,7 @@ const [selectedImage, setSelectedImage] = useState("");
           {/* RATING */}
          <div>
   <span className="inline-flex items-center gap-1 text-[16px] text-[#4a72c2] bg-[#edf2ff] px-3 py-[2px] rounded-full font-medium whitespace-nowrap">
-    3.9
+    {product.shop_rating}
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="12"
@@ -240,14 +257,14 @@ const [selectedImage, setSelectedImage] = useState("");
   </span>
 
   <p className="text-[15px] text-[#8b8ba3] mt-1">
-    11,984 Ratings
+    {product.shop_total_rating} Ratings
   </p>
 </div>
 
           {/* FOLLOWERS */}
           <div>
             <p className="text-[16px] font-medium text-[#353543]">
-              41
+              {product.shop_followers}
             </p>
 
             <p className="text-[15px] text-[#8b8ba3]">
@@ -258,7 +275,7 @@ const [selectedImage, setSelectedImage] = useState("");
           {/* PRODUCTS */}
           <div>
             <p className="text-[16px] font-medium text-[#353543]">
-              46
+              {product.shop_total_products}
             </p>
 
             <p className="text-[15px] text-[#8b8ba3]">

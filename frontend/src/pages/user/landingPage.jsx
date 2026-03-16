@@ -1,7 +1,7 @@
 // src/pages/LandingPage.tsx  (or src/App.tsx if it's the main page)
 import Header from "../../components/Header";
 import { useState } from "react";
-import ProductSection from "./ProductSection";
+import ProductSection from "./productSection.jsx";
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaTwitter } from "react-icons/fa";
 // import other components: Hero, Categories, FeaturedProducts, Footer...
 

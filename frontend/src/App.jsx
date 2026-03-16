@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/user/landingPage.jsx';
-import ProductDetails from "./pages/user/ProductDetails.jsx";
-import RegisterNumber from "./pages/user/RegisterNumber.jsx";
+import ProductDetails from "./pages/user/productDetails.jsx";
+import RegisterNumber from "./pages/user/rgisterNumber.jsx";
 import CheckoutPage from "./pages/user/userAddress.jsx";
 import PaymentPage from  "./pages/user/paymentPage.jsx";
+import Dashboard from  "./pages/admin/dashboard.jsx";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/phone/:id" element={<RegisterNumber />} />
             <Route path="/address/:id" element={<CheckoutPage />} />
             <Route path="/paymentPage" element={<PaymentPage />} />
+            <Route path="/admin" element={<Dashboard />} />
             <Route
               path="*"
               element={
