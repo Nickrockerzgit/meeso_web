@@ -85,3 +85,24 @@ model UserCard {
   cvv        String
   created_at DateTime  @default(now())
 }
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+}
+
+model OtpCode {
+  id        Int      @id @default(autoincrement())
+  email     String
+  code      String
+  purpose   String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
