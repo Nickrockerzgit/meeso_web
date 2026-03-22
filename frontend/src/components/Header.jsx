@@ -639,7 +639,7 @@ const menuData = {
 
 // Your menuData remains unchanged (it's already very detailed and accurate)
 
-export default function Header() {
+export default function Header({ scrollToProducts }) {
 
   return (
     <header className="w-full bg-white sticky top-0 z-50 border-b border-gray-200 shadow-sm">
@@ -744,13 +744,68 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Category Bar + Mega Menu */}
+      {/* Category Bar + Mega Menu
       <nav className="border-t   border-gray-200 bg-white">
         <div className=" max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="flex items-center h-11 md:h-12 overflow-x-visible whitespace-nowrap gap-5 md:gap-8 lg:gap-10 text-sm text-gray-700 font-medium no-scrollbar">
             {Object.keys(menuData).map((category) => (
               <div
                 key={category}
+                className="group  relative py-3.5 px-2 cursor-pointer flex items-center"
+               
+              >
+                <span className="group-hover:text-[#9f2089] transition-colors">
+                  {category}
+                </span>
+
+               
+                <span className="absolute left-0 bottom-0 h-[3px] w-0 bg-[#9f2089] group-hover:w-full transition-all duration-300" />
+
+                
+                  <div
+                  className="
+    absolute left-1/2 -translate-x-1/2 top-full w-screen
+    bg-white border-t border-gray-200 shadow-2xl z-50
+    opacity-0 invisible
+    group-hover:opacity-100 group-hover:visible
+    transition-all duration-200 ease-out
+  "
+                >
+                  <div className="max-w-[1400px] mx-auto px-6 py-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 lg:gap-10">
+                    {menuData[category]?.map((section) => (
+                      <div key={section.title}>
+                        <h4 className="text-[#9f2089] font-semibold mb-3.5 text-[15px]">
+                          {section.title}
+                        </h4>
+                        <ul className="space-y-2.5 text-gray-600 text-[13.5px]">
+                          {section.items.map((item) => (
+                            <li
+                              key={item}
+                              className="hover:text-[#9f2089] cursor-pointer transition-colors"
+                            >
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </nav> */}
+
+
+
+      <nav className="border-t   border-gray-200 bg-white">
+        <div className=" max-w-[1400px] mx-auto px-4 md:px-6">
+          <div className="flex items-center h-11 md:h-12 overflow-x-auto whitespace-nowrap gap-5 md:gap-8 lg:gap-10 text-sm text-gray-700 font-medium no-scrollbar">
+            {Object.keys(menuData).map((category) => (
+              <div
+                key={category}
+                onClick={() => scrollToProducts && scrollToProducts()}
                 className="group  relative py-3.5 px-2 cursor-pointer flex items-center"
                 // We don't need onMouseEnter/onMouseLeave here anymore
               >
@@ -795,7 +850,8 @@ export default function Header() {
             ))}
           </div>
         </div>
-      </nav>
+      </nav>{/* Category Bar + Mega Menu */}
+
     </header>
   );
 }

@@ -11,6 +11,8 @@ export default function ReviewPage() {
   const [openAddress, setOpenAddress] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [address, setAddress] = useState(null);
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [timeLeft, setTimeLeft] = useState({ hours: 1, minutes: 49, seconds: 50 });
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -21,6 +23,7 @@ export default function ReviewPage() {
     state: ""
   });
   const phone = location.state?.phone;
+  const selectedSize = location.state?.selectedSize || "Free Size";
 
   useEffect(() => {
 
@@ -41,6 +44,34 @@ export default function ReviewPage() {
   };
 
   fetchProduct();
+
+  // Set delivery date to tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const options = { weekday: 'long', day: 'numeric', month: 'short' };
+  setDeliveryDate(tomorrow.toLocaleDateString('en-US', options));
+
+  // Set countdown timer from 2 hours
+  const deadline = new Date();
+  deadline.setHours(deadline.getHours() + 2);
+
+  const updateTimer = () => {
+    const now = new Date();
+    const diff = deadline - now;
+    if (diff > 0) {
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      setTimeLeft({ hours, minutes, seconds });
+    } else {
+      setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
+    }
+  };
+
+  updateTimer();
+  const interval = setInterval(updateTimer, 1000);
+
+  return () => clearInterval(interval);
 
 }, [id]);
 const goToPayment = () => {
@@ -127,7 +158,7 @@ const goToPayment = () => {
 
              <div className="p-3 border-b text-sm font-medium flex items-center gap-2 whitespace-nowrap">
   <Truck size={16} />
-  Estimated Delivery by Thursday, 19th Mar
+  Estimated Delivery by {deliveryDate}
 </div>
 
               <div className="flex gap-4 p-4">
@@ -157,23 +188,23 @@ const goToPayment = () => {
                       {Math.round(((product.old_price - product.price) / product.old_price) * 100)}% Off
                     </span>
 
-                    <span className="text-xs bg-orange-100 text-orange-600 px-2 rounded">
-                      01h : 49m : 50s
+                    <span className="text-xs bg-orange-100 text-orange-600 px-2 rounded whitespace-nowrap">
+                      {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m : {String(timeLeft.seconds).padStart(2, '0')}s
                     </span>
 
                   </div>
 
                   <p className="text-sm  mt-2 font-semibold">
-                    Size: Free Size • Qty: 1
+                    Size: {selectedSize} • Qty: 1
                   </p>
 
                 </div>
 
-                <button
+                {/* <button
                   className="text-[#9f2089] font-medium text-sm"
                 >
                   EDIT
-                </button>
+                </button> */}
 
               </div>
 
@@ -240,21 +271,21 @@ const goToPayment = () => {
 
           <div className="flex justify-between text-sm mb-2">
             <span className="underline decoration-dotted">Product Price</span>
-            <span>+ ₹108</span>
+            <span>+ ₹{product.price}</span>
           </div>
 
           <div className="flex justify-between text-sm text-green-600 mb-4">
             <span className="underline decoration-dotted">Total Discounts</span>
-            <span>- ₹17</span>
+            <span>- ₹{product.old_price - product.price}</span>
           </div>
 
           <div className="border-t pt-4 flex justify-between font-semibold text-lg">
             <span>Order Total</span>
-            <span>₹91</span>
+            <span>₹{product.price}</span>
           </div>
 
           <div className="bg-green-100 text-green-700 p-3 rounded text-sm mt-4">
-            Yay! Your total discount is ₹17
+            Yay! Your total discount is ₹{product.old_price - product.price}
           </div>
 
           <div className="bg-gray-100 text-gray-600 text-xs p-3 rounded mt-4 text-center">

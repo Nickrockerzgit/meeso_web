@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Save, CreditCard as Edit2 } from 'lucide-react';
 
 const API = import.meta.env.VITE_API_URL ||"http://localhost:5000";
-console.log(API);
+// console.log(API);
 
 export default function AddApk() {
   const [apkUrl, setApkUrl] = useState('');

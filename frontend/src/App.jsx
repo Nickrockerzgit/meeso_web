@@ -1,10 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/user/landingPage.jsx';
-import ProductDetails from "./pages/user/productDetails.jsx";
+import ProductDetails from "./pages/user/ProductDetails.jsx";
 import RegisterNumber from "./pages/user/rgisterNumber.jsx";
 import CheckoutPage from "./pages/user/userAddress.jsx";
 import PaymentPage from  "./pages/user/paymentPage.jsx";
 import Dashboard from  "./pages/admin/dashboard.jsx";
+import SignIn from "./pages/user/signin.jsx";
+import SignUp from "./pages/user/signup.jsx";
+import ForgotPassword from "./pages/user/forgotPassword.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+
 
 
 function App() {
@@ -20,7 +25,10 @@ function App() {
             <Route path="/phone/:id" element={<RegisterNumber />} />
             <Route path="/address/:id" element={<CheckoutPage />} />
             <Route path="/paymentPage" element={<PaymentPage />} />
-            <Route path="/admin" element={<Dashboard />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route
               path="*"
               element={
