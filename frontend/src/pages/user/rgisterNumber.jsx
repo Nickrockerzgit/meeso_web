@@ -1,10 +1,12 @@
 import React,{ useState } from "react";
-import { useNavigate , useParams } from "react-router-dom";
+import { useNavigate , useParams, useLocation } from "react-router-dom";
 
 export default function RegisterNumber() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [phone, setPhone] = useState("");
   const { id } = useParams();
+  const selectedSize = location.state?.selectedSize || "L";
   const handleContinue = () => {
 
     if (!phone) {
@@ -13,7 +15,7 @@ export default function RegisterNumber() {
     }
 
     navigate(`/address/${id}`, {
-      state: { phone }
+      state: { phone, selectedSize }
     });
 
   };

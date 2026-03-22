@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 
 const API = import.meta.env.VITE_API_URL||"http://localhost:5000";
 
-const ProductSection = () => {
+const ProductSection = forwardRef((props, ref) => {
 
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const fetchProducts = async () => {
   }
 
 return (
-  <section className="w-full px-3 md:px-12 py-6 md:py-10 bg-gray-50">
+  <section ref={ref} className="w-full px-3 md:px-12 py-6 md:py-10 bg-gray-50">
 
     {/* GRID */}
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8"
@@ -114,6 +114,6 @@ return (
 
   </section>
 );
-};
+});
 
 export default ProductSection;
