@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Sidebar from './sideBar.jsx';
 import AddProduct from './addProduct.jsx';
 import AddApk from './addApk.jsx';
+import AddBanner from './addBanner.jsx';
 import UserInfo from './userInfo.jsx';
 import { Menu } from 'lucide-react';
 
@@ -37,6 +38,7 @@ export default function Dashboard() {
         <main className="flex-1">
           {activeSection === 'products' && <AddProduct />}
           {activeSection === 'apk' && <AddApk />}
+          {activeSection === 'banners' && <AddBanner />}
           {activeSection === 'users' && <UserInfo />}
         </main>
       </div>

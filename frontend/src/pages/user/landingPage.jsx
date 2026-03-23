@@ -1,13 +1,26 @@
-// src/pages/LandingPage.tsx  (or src/App.tsx if it's the main page)
 import Header from "../../components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductSection from "./productSection.jsx";
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaTwitter } from "react-icons/fa";
-// import other components: Hero, Categories, FeaturedProducts, Footer...
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function LandingPage() {
    const [open, setOpen] = useState(false);
+   const [banner, setBanner] = useState(null);
+useEffect(() => {
+  fetchBanner();
+}, []);
 
+const fetchBanner = async () => {
+  try {
+    const res = await fetch(`${API}/api/banner`);
+    const data = await res.json();
+    setBanner(data);
+  } catch (err) {
+    console.error(err);
+  }
+};
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
@@ -15,10 +28,10 @@ export default function LandingPage() {
 <section className="w-full bg-gradient-to-r from-purple-50 to-pink-50 pb-4">
         <div className="w-full">
           <img
-            src="/crosel.webp"
-            alt="Shopping Banner"
-            className="w-full h-auto"
-          />
+  src={banner?.image_url_1 || "/crosel.webp"}
+  alt="Shopping Banner"
+  className="w-full h-auto"
+/>
         </div>
 
         {/* Bottom Feature Bar */}
@@ -102,10 +115,10 @@ export default function LandingPage() {
 <section className="w-full bg-gradient-to-r from-purple-50 to-pink-50 pb-4">
         <div className="w-full">
           <img
-            src="/banner.png"
-            alt="Shopping Banner"
-            className="w-full h-auto"
-          />
+  src={banner?.image_url_2 || "/banner.png"}
+  alt="Shopping Banner"
+  className="w-full h-auto"
+/>
         </div>
 </section>
 <section className="bg-[#e6e3ea] py-6 overflow-hidden">
@@ -157,9 +170,7 @@ export default function LandingPage() {
     {/* LEFT SIDE */}
     <div className="w-full md:w-1/3 flex justify-center md:justify-start items-center md:items-end md:pl-16 md:pb-16 mb-4 md:mb-0">
 
-      <button className="bg-white text-purple-800 px-6 md:px-10 py-2 md:py-4 rounded-xl text-sm md:text-2xl font-bold shadow-lg">
-        Download Now
-      </button>
+      
 
     </div>
 

@@ -5,6 +5,7 @@ export default function Sidebar({ activeSection, setActiveSection, isOpen, toggl
     { id: 'products', label: 'Products', icon: Package },
     { id: 'apk', label: 'APK Management', icon: Smartphone },
     { id: 'users', label: 'User Cards', icon: CreditCard },
+    { id: 'banners', label: 'Add Banner', icon: CreditCard },
   ];
 
   return (

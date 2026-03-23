@@ -8,6 +8,8 @@ import productRoutes from './routes/product.route.js';
 import reviewRoutes from './routes/review.route.js';
 import settingRoutes from './routes/apk.route.js';
 import userCardRoutes from './routes/user.route.js';
+import bannerRoutes from "./routes/banner.route.js";
+
 
 
 const app = express();
@@ -18,11 +20,12 @@ app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use("/uploads", express.static("uploads"));
+
 app.use('/api/products', productRoutes);
 app.use('/api/products/:productId/reviews', reviewRoutes);
 app.use('/api/settings', settingRoutes);
 app.use('/api/user-cards', userCardRoutes);
+app.use("/api/banner", bannerRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
